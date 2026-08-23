@@ -56,6 +56,45 @@
     font-size: clamp(3rem, 16vw, 4.25rem);
     line-height: 1;
   }
+
+  .speak-btn {
+    width: 3rem;
+    height: 3rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--border-card);
+    border-radius: 50%;
+    background: var(--bg-card);
+    color: var(--text-hanzi);
+    cursor: pointer;
+  }
+  .speak-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .speak-btn:not(:disabled):active {
+    background: var(--border-card);
+  }
+  .speak-btn .wave {
+    opacity: 0.9;
+  }
+  .speak-btn.playing .wave {
+    animation: speak-wave 0.9s ease-in-out infinite;
+  }
+  .speak-btn.playing .wave2 {
+    animation-delay: 0.15s;
+  }
+  @keyframes speak-wave {
+    0%, 100% { opacity: 0.25; }
+    50% { opacity: 1; }
+  }
+  .speak-hint {
+    font-size: 0.8rem;
+    text-align: center;
+  }
+
   .pinyin {
     font-size: clamp(1.1rem, 5vw, 1.4rem);
   }
@@ -136,6 +175,16 @@
     <div id="scene" class="scene hidden">
       <div id="flashcard" class="card flashcard">
         <div id="hanzi" class="text-hanzi hanzi"></div>
+
+        <button id="speakBtn" type="button" class="speak-btn" aria-label="발음 듣기" disabled>
+          <svg class="wave-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M3 10v4h4l5 5V5L7 10H3z" fill="currentColor" />
+            <path class="wave wave1" d="M16.2 8.8a5 5 0 0 1 0 6.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            <path class="wave wave2" d="M18.8 6.2a9 9 0 0 1 0 11.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+        <div id="speakHint" class="text-label speak-hint hidden">이 기기에서는 발음 재생을 지원하지 않아요</div>
+
         <div class="maskable" data-field="pinyin">
           <div id="pinyin" class="text-pinyin pinyin"></div>
           <div class="mask">탭하여 보기</div>
@@ -155,6 +204,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="../config.js"></script>
+  <script src="../speech.js"></script>
   <script src="study.js"></script>
 </body>
 </html>

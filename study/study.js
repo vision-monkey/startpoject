@@ -13,6 +13,8 @@ const pinyinWrap = document.querySelector('.maskable[data-field="pinyin"]');
 const meaningWrap = document.querySelector('.maskable[data-field="meaning"]');
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
+const speakBtn = document.getElementById("speakBtn");
+const speakHintEl = document.getElementById("speakHint");
 
 function loadSettings() {
   const defaults = { mode: "manual", hidePinyin: false, hideMeaning: true, interval: 4 };
@@ -63,6 +65,34 @@ document.querySelectorAll(".mask").forEach((maskEl) => {
   });
 });
 
+function currentWord() {
+  return words[currentIndex];
+}
+
+function canSpeak(word) {
+  return !!(word && (word.audio_url || Speech.hasVoice()));
+}
+
+function updateSpeakButton() {
+  const word = currentWord();
+  const available = canSpeak(word);
+  speakBtn.disabled = !available;
+  speakHintEl.classList.toggle("hidden", available);
+}
+
+speakBtn.addEventListener("click", () => {
+  const word = currentWord();
+  if (!canSpeak(word)) return;
+  speakBtn.classList.add("playing");
+  Speech.speak(word, {
+    onEnd: () => speakBtn.classList.remove("playing"),
+  });
+});
+
+Speech.init(() => {
+  if (words.length > 0) updateSpeakButton();
+});
+
 function showMessage(text, isError) {
   messageEl.textContent = text;
   messageEl.classList.toggle("err", isError);
@@ -82,12 +112,15 @@ function showCard() {
 
 function renderCurrentCard() {
   clearAutoTimers();
+  Speech.stop();
+  speakBtn.classList.remove("playing");
 
   const word = words[currentIndex];
   hanziEl.textContent = word.hanzi;
   pinyinEl.textContent = word.pinyin;
   meaningEl.textContent = word.meaning_ko || word.meaning_en || "";
   applyMasks();
+  updateSpeakButton();
 
   progressEl.textContent = `${currentIndex + 1} / ${words.length}`;
   prevBtn.disabled = currentIndex === 0;
@@ -117,6 +150,8 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft") goToPrev();
   if (e.key === "ArrowRight") goToNext();
 });
+
+window.addEventListener("pagehide", () => Speech.stop());
 
 async function loadWords() {
   try {
