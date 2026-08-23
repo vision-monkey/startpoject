@@ -44,24 +44,11 @@
 
   .scene {
     width: 100%;
-    height: 320px;
-    perspective: 1200px;
+    min-height: 320px;
   }
   .flashcard {
-    position: relative;
     width: 100%;
-    height: 100%;
-    cursor: pointer;
-    transform-style: preserve-3d;
-    transition: transform 0.5s;
-  }
-  .flashcard.flipped {
-    transform: rotateY(180deg);
-  }
-  .face {
-    position: absolute;
-    inset: 0;
-    backface-visibility: hidden;
+    min-height: 320px;
     border-radius: 16px;
     background: #1e293b;
     box-shadow: 0 10px 30px rgba(0,0,0,0.4);
@@ -69,12 +56,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 1.5rem;
+    padding: 2rem 1.5rem;
     text-align: center;
-    gap: 0.75rem;
-  }
-  .face.back {
-    transform: rotateY(180deg);
+    gap: 1.25rem;
   }
   .hanzi {
     font-size: clamp(3rem, 18vw, 5.5rem);
@@ -88,12 +72,6 @@
   .meaning {
     font-size: clamp(1.1rem, 5vw, 1.4rem);
     color: #e2e8f0;
-  }
-  .hint {
-    position: absolute;
-    bottom: 0.75rem;
-    font-size: 0.75rem;
-    color: #64748b;
   }
 
   .controls {
@@ -135,14 +113,9 @@
 
     <div id="scene" class="scene hidden">
       <div id="flashcard" class="flashcard">
-        <div class="face front">
-          <div id="hanzi" class="hanzi"></div>
-          <div class="hint">탭하면 뒤집혀요</div>
-        </div>
-        <div class="face back">
-          <div id="pinyin" class="pinyin"></div>
-          <div id="meaning" class="meaning"></div>
-        </div>
+        <div id="hanzi" class="hanzi"></div>
+        <div id="pinyin" class="pinyin"></div>
+        <div id="meaning" class="meaning"></div>
       </div>
     </div>
 

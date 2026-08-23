@@ -14,7 +14,6 @@ const nextBtn = document.getElementById("nextBtn");
 
 let words = [];
 let currentIndex = 0;
-let flipped = false;
 
 function showMessage(text, isError) {
   messageEl.textContent = text;
@@ -39,9 +38,6 @@ function renderCurrentCard() {
   pinyinEl.textContent = word.pinyin;
   meaningEl.textContent = word.meaning_ko || word.meaning_en || "";
 
-  flipped = false;
-  flashcardEl.classList.remove("flipped");
-
   progressEl.textContent = `${currentIndex + 1} / ${words.length}`;
   prevBtn.disabled = currentIndex === 0;
   nextBtn.disabled = currentIndex === words.length - 1;
@@ -60,11 +56,6 @@ function goToNext() {
     renderCurrentCard();
   }
 }
-
-flashcardEl.addEventListener("click", () => {
-  flipped = !flipped;
-  flashcardEl.classList.toggle("flipped", flipped);
-});
 
 prevBtn.addEventListener("click", goToPrev);
 nextBtn.addEventListener("click", goToNext);
