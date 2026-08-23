@@ -23,17 +23,93 @@
     width: 100%;
     max-width: 420px;
     padding: 2.5rem 1.5rem;
-    text-decoration: none;
     font-size: clamp(1.5rem, 6vw, 2rem);
     font-weight: 600;
-    text-align: center;
+    cursor: pointer;
   }
   .start-btn:active {
     background: var(--border-card);
   }
+
+  dialog#settingsModal {
+    width: min(380px, calc(100vw - 2.5rem));
+    padding: 1.75rem 1.5rem 1.5rem;
+    font-family: var(--font-ui);
+  }
+  dialog#settingsModal[open] {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  dialog#settingsModal::backdrop {
+    background: rgba(40, 26, 10, 0.4);
+  }
+  .modal-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  .setting-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .setting-title {
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  .setting-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--text-meaning);
+  }
+  #startBtn {
+    margin-top: 0.25rem;
+    padding: 0.9rem 1rem;
+    border: none;
+    border-radius: 12px;
+    background: var(--text-hanzi);
+    color: var(--bg-card);
+    font-family: var(--font-ui);
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  #startBtn:active {
+    opacity: 0.85;
+  }
 </style>
 </head>
 <body>
-  <a class="card start-btn text-hanzi" href="study/">HSK 1급 단어</a>
+  <button id="openSettingsBtn" type="button" class="card start-btn text-hanzi">HSK 1급 단어</button>
+
+  <dialog id="settingsModal" class="card">
+    <h2 class="modal-title text-label">학습 설정</h2>
+
+    <div class="setting-group">
+      <div class="setting-title text-label">모드</div>
+      <label><input type="radio" name="mode" value="manual" checked> 수동 (탭해서 보기)</label>
+      <label><input type="radio" name="mode" value="auto"> 자동 (시간 지나면 자동 공개)</label>
+    </div>
+
+    <div class="setting-group">
+      <div class="setting-title text-label">가릴 항목</div>
+      <label><input type="checkbox" name="hide" value="pinyin"> 병음</label>
+      <label><input type="checkbox" name="hide" value="meaning" checked> 뜻 (한글)</label>
+    </div>
+
+    <div class="setting-group" id="intervalGroup" hidden>
+      <div class="setting-title text-label">카드 전환 간격</div>
+      <label><input type="radio" name="interval" value="2" checked> 2초</label>
+      <label><input type="radio" name="interval" value="4"> 4초</label>
+      <label><input type="radio" name="interval" value="8"> 8초</label>
+    </div>
+
+    <button id="startBtn" type="button">시작하기</button>
+  </dialog>
+
+  <script src="home.js"></script>
 </body>
 </html>

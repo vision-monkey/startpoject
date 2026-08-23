@@ -9,11 +9,59 @@ const flashcardEl = document.getElementById("flashcard");
 const hanziEl = document.getElementById("hanzi");
 const pinyinEl = document.getElementById("pinyin");
 const meaningEl = document.getElementById("meaning");
+const pinyinWrap = document.querySelector('.maskable[data-field="pinyin"]');
+const meaningWrap = document.querySelector('.maskable[data-field="meaning"]');
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 
+function loadSettings() {
+  const defaults = { mode: "manual", hidePinyin: false, hideMeaning: true, interval: 4 };
+  try {
+    const raw = localStorage.getItem("hskStudySettings");
+    if (!raw) return defaults;
+    return { ...defaults, ...JSON.parse(raw) };
+  } catch {
+    return defaults;
+  }
+}
+
+const settings = loadSettings();
+
 let words = [];
 let currentIndex = 0;
+let autoRevealTimer = null;
+let autoAdvanceTimer = null;
+
+function clearAutoTimers() {
+  clearTimeout(autoRevealTimer);
+  clearTimeout(autoAdvanceTimer);
+  autoRevealTimer = null;
+  autoAdvanceTimer = null;
+}
+
+function applyMasks() {
+  pinyinWrap.classList.toggle("masked", settings.hidePinyin);
+  meaningWrap.classList.toggle("masked", settings.hideMeaning);
+}
+
+function revealAll() {
+  pinyinWrap.classList.remove("masked");
+  meaningWrap.classList.remove("masked");
+}
+
+function scheduleAuto() {
+  if (settings.mode !== "auto") return;
+  autoRevealTimer = setTimeout(() => {
+    revealAll();
+    autoAdvanceTimer = setTimeout(goToNext, 1000);
+  }, settings.interval * 1000);
+}
+
+document.querySelectorAll(".mask").forEach((maskEl) => {
+  maskEl.addEventListener("click", () => {
+    maskEl.closest(".maskable").classList.remove("masked");
+  });
+});
 
 function showMessage(text, isError) {
   messageEl.textContent = text;
@@ -33,14 +81,19 @@ function showCard() {
 }
 
 function renderCurrentCard() {
+  clearAutoTimers();
+
   const word = words[currentIndex];
   hanziEl.textContent = word.hanzi;
   pinyinEl.textContent = word.pinyin;
   meaningEl.textContent = word.meaning_ko || word.meaning_en || "";
+  applyMasks();
 
   progressEl.textContent = `${currentIndex + 1} / ${words.length}`;
   prevBtn.disabled = currentIndex === 0;
   nextBtn.disabled = currentIndex === words.length - 1;
+
+  scheduleAuto();
 }
 
 function goToPrev() {

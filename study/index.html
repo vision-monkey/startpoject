@@ -63,6 +63,36 @@
     font-size: clamp(1.1rem, 5vw, 1.4rem);
   }
 
+  .maskable {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+  }
+  .mask {
+    display: none;
+    position: absolute;
+    inset: -0.2em -0.6em;
+    align-items: center;
+    justify-content: center;
+    background: var(--border-card);
+    border-radius: 8px;
+    color: var(--text-hanzi);
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    font-style: normal;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .maskable.masked .mask {
+    display: flex;
+  }
+  .maskable.masked #pinyin,
+  .maskable.masked #meaning {
+    visibility: hidden;
+  }
+
   .controls {
     display: flex;
     align-items: center;
@@ -104,8 +134,14 @@
     <div id="scene" class="scene hidden">
       <div id="flashcard" class="card flashcard">
         <div id="hanzi" class="text-hanzi hanzi"></div>
-        <div id="pinyin" class="text-pinyin pinyin"></div>
-        <div id="meaning" class="text-meaning meaning"></div>
+        <div class="maskable" data-field="pinyin">
+          <div id="pinyin" class="text-pinyin pinyin"></div>
+          <div class="mask">탭하여 보기</div>
+        </div>
+        <div class="maskable" data-field="meaning">
+          <div id="meaning" class="text-meaning meaning"></div>
+          <div class="mask">탭하여 보기</div>
+        </div>
       </div>
     </div>
 
