@@ -4,15 +4,16 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>HSK 단어 학습</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
 <style>
   body {
-    margin: 0;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #0f172a;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     padding: 1.5rem;
   }
   .start-btn {
@@ -22,21 +23,17 @@
     width: 100%;
     max-width: 420px;
     padding: 2.5rem 1.5rem;
-    background: #1e293b;
-    color: #e2e8f0;
     text-decoration: none;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     font-size: clamp(1.5rem, 6vw, 2rem);
-    font-weight: 700;
+    font-weight: 600;
     text-align: center;
   }
   .start-btn:active {
-    background: #334155;
+    background: var(--border-card);
   }
 </style>
 </head>
 <body>
-  <a class="start-btn" href="study/">HSK 1급 단어</a>
+  <a class="card start-btn text-hanzi" href="study/">HSK 1급 단어</a>
 </body>
 </html>

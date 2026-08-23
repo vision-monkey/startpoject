@@ -1,0 +1,58 @@
+/* Shared design tokens for the whole app — plain CSS variables since
+   this project has no build step (no Tailwind / CSS Modules). */
+
+:root {
+  --bg-page: oklch(96% 0.015 75);
+  --bg-card: oklch(98% 0.008 75);
+  --border-card: oklch(72% 0.045 70);
+
+  --text-hanzi: oklch(32% 0.03 50);
+  --text-pinyin: oklch(50% 0.03 55);
+  --text-meaning: oklch(38% 0.02 50);
+  --text-label: oklch(55% 0.02 60);
+  --text-error: oklch(48% 0.12 25);
+
+  --font-hanzi: "Noto Serif SC", serif;
+  --font-ui: "Noto Sans KR", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg-page);
+  color: var(--text-meaning);
+  font-family: var(--font-ui);
+}
+
+.card {
+  background: var(--bg-card);
+  border: 2px solid var(--border-card);
+  border-radius: 20px;
+}
+
+.text-hanzi {
+  font-family: var(--font-hanzi);
+  font-weight: 600;
+  color: var(--text-hanzi);
+}
+
+.text-pinyin {
+  font-family: var(--font-hanzi);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--text-pinyin);
+}
+
+.text-meaning {
+  font-family: var(--font-ui);
+  font-weight: 400;
+  color: var(--text-meaning);
+}
+
+.text-label {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  color: var(--text-label);
+}

@@ -17,7 +17,7 @@ let currentIndex = 0;
 
 function showMessage(text, isError) {
   messageEl.textContent = text;
-  messageEl.className = isError ? "err" : "";
+  messageEl.classList.toggle("err", isError);
   messageEl.classList.remove("hidden");
   sceneEl.classList.add("hidden");
   controlsEl.classList.add("hidden");
