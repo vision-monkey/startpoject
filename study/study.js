@@ -17,7 +17,7 @@ const speakBtn = document.getElementById("speakBtn");
 const speakHintEl = document.getElementById("speakHint");
 
 function loadSettings() {
-  const defaults = { mode: "manual", hidePinyin: false, hideMeaning: true, interval: 4 };
+  const defaults = { mode: "manual", hidePinyin: false, hideMeaning: true, interval: 4, autoSpeak: false };
   try {
     const raw = localStorage.getItem("hskStudySettings");
     if (!raw) return defaults;
@@ -55,6 +55,7 @@ function scheduleAuto() {
   if (settings.mode !== "auto") return;
   autoRevealTimer = setTimeout(() => {
     revealAll();
+    if (settings.autoSpeak) playCurrentWord();
     autoAdvanceTimer = setTimeout(goToNext, 1000);
   }, settings.interval * 1000);
 }
@@ -80,14 +81,16 @@ function updateSpeakButton() {
   speakHintEl.classList.toggle("hidden", available);
 }
 
-speakBtn.addEventListener("click", () => {
+function playCurrentWord() {
   const word = currentWord();
   if (!canSpeak(word)) return;
   speakBtn.classList.add("playing");
   Speech.speak(word, {
     onEnd: () => speakBtn.classList.remove("playing"),
   });
-});
+}
+
+speakBtn.addEventListener("click", playCurrentWord);
 
 Speech.init(() => {
   if (words.length > 0) updateSpeakButton();

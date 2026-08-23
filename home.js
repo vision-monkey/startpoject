@@ -20,10 +20,11 @@ startBtn.addEventListener("click", () => {
   const hideMeaning = document.querySelector('input[name="hide"][value="meaning"]').checked;
   const intervalInput = document.querySelector('input[name="interval"]:checked');
   const interval = intervalInput ? Number(intervalInput.value) : 4;
+  const autoSpeak = document.getElementById("autoSpeakCheckbox").checked;
 
   localStorage.setItem(
     "hskStudySettings",
-    JSON.stringify({ mode, hidePinyin, hideMeaning, interval })
+    JSON.stringify({ mode, hidePinyin, hideMeaning, interval, autoSpeak })
   );
 
   window.location.href = "study/";
