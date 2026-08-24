@@ -33,6 +33,7 @@ let words = [];
 let currentIndex = 0;
 let autoRevealTimer = null;
 let autoAdvanceTimer = null;
+let renderGen = 0;
 
 function clearAutoTimers() {
   clearTimeout(autoRevealTimer);
@@ -53,10 +54,23 @@ function revealAll() {
 
 function scheduleAuto() {
   if (settings.mode !== "auto") return;
+  const gen = renderGen;
+
   autoRevealTimer = setTimeout(() => {
     revealAll();
-    if (settings.autoSpeak) playCurrentWord();
-    autoAdvanceTimer = setTimeout(goToNext, 1000);
+
+    if (settings.autoSpeak) {
+      // Wait for the pronunciation to actually finish before advancing,
+      // instead of a fixed timer that could cut it off mid-playback.
+      playCurrentWord(() => {
+        if (gen !== renderGen) return;
+        autoAdvanceTimer = setTimeout(() => {
+          if (gen === renderGen) goToNext();
+        }, 500);
+      });
+    } else {
+      autoAdvanceTimer = setTimeout(goToNext, 1000);
+    }
   }, settings.interval * 1000);
 }
 
@@ -81,16 +95,22 @@ function updateSpeakButton() {
   speakHintEl.classList.toggle("hidden", available);
 }
 
-function playCurrentWord() {
+function playCurrentWord(onDone) {
   const word = currentWord();
-  if (!canSpeak(word)) return;
+  if (!canSpeak(word)) {
+    if (onDone) onDone();
+    return;
+  }
   speakBtn.classList.add("playing");
   Speech.speak(word, {
-    onEnd: () => speakBtn.classList.remove("playing"),
+    onEnd: () => {
+      speakBtn.classList.remove("playing");
+      if (onDone) onDone();
+    },
   });
 }
 
-speakBtn.addEventListener("click", playCurrentWord);
+speakBtn.addEventListener("click", () => playCurrentWord());
 
 Speech.init(() => {
   if (words.length > 0) updateSpeakButton();
@@ -114,6 +134,7 @@ function showCard() {
 }
 
 function renderCurrentCard() {
+  renderGen++;
   clearAutoTimers();
   Speech.stop();
   speakBtn.classList.remove("playing");
