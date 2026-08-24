@@ -58,12 +58,40 @@
     font-weight: 500;
     font-size: 0.95rem;
   }
-  .setting-group label {
+  .option-row {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
     gap: 0.5rem;
-    font-size: 0.95rem;
+  }
+  .option-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.55rem 1rem;
+    border: 2px solid var(--border-card);
+    border-radius: 999px;
+    background: var(--bg-card);
     color: var(--text-meaning);
+    font-size: 0.9rem;
+    font-family: var(--font-ui);
+    cursor: pointer;
+    user-select: none;
+  }
+  .option-btn input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .option-btn:has(input:checked) {
+    background: var(--text-hanzi);
+    border-color: var(--text-hanzi);
+    color: var(--bg-card);
+    font-weight: 600;
+  }
+  .option-btn:has(input:focus-visible) {
+    outline: 2px solid var(--text-hanzi);
+    outline-offset: 2px;
   }
   #startBtn {
     margin-top: 0.25rem;
@@ -90,23 +118,31 @@
 
     <div class="setting-group">
       <div class="setting-title text-label">모드</div>
-      <label><input type="radio" name="mode" value="manual"> 수동 (탭해서 보기)</label>
-      <label><input type="radio" name="mode" value="auto" checked> 자동 (시간 지나면 자동 공개)</label>
+      <div class="option-row">
+        <label class="option-btn"><input type="radio" name="mode" value="manual"> 수동</label>
+        <label class="option-btn"><input type="radio" name="mode" value="auto" checked> 자동</label>
+      </div>
     </div>
 
     <div class="setting-group">
       <div class="setting-title text-label">가릴 항목</div>
-      <label><input type="checkbox" name="hide" value="pinyin"> 병음</label>
-      <label><input type="checkbox" name="hide" value="meaning" checked> 뜻 (한글)</label>
+      <div class="option-row">
+        <label class="option-btn"><input type="checkbox" name="hide" value="pinyin"> 병음</label>
+        <label class="option-btn"><input type="checkbox" name="hide" value="meaning" checked> 뜻 (한글)</label>
+      </div>
     </div>
 
     <div class="setting-group" id="intervalGroup">
-      <label><input type="checkbox" id="autoSpeakCheckbox" checked> 자동으로 넘어갈 때 발음 읽어주기</label>
+      <div class="option-row">
+        <label class="option-btn"><input type="checkbox" id="autoSpeakCheckbox" checked> 발음 읽어주기</label>
+      </div>
 
       <div class="setting-title text-label">카드 전환 간격</div>
-      <label><input type="radio" name="interval" value="2" checked> 2초</label>
-      <label><input type="radio" name="interval" value="4"> 4초</label>
-      <label><input type="radio" name="interval" value="8"> 8초</label>
+      <div class="option-row">
+        <label class="option-btn"><input type="radio" name="interval" value="2" checked> 2초</label>
+        <label class="option-btn"><input type="radio" name="interval" value="4"> 4초</label>
+        <label class="option-btn"><input type="radio" name="interval" value="8"> 8초</label>
+      </div>
     </div>
 
     <button id="startBtn" type="button">시작하기</button>
