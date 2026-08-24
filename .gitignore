@@ -1,0 +1,7 @@
+# secrets — never commit
+secrets/
+.env.local
+data/google cloude/
+
+# local tooling
+node_modules/

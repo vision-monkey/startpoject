@@ -1,0 +1,15 @@
+{
+  "name": "hsk-audio-gen",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Local-only script: generates Chinese pronunciation mp3s via Google Cloud TTS and uploads them to Supabase Storage. Never deployed.",
+  "type": "commonjs",
+  "scripts": {
+    "generate": "node generate-audio.js"
+  },
+  "dependencies": {
+    "@google-cloud/text-to-speech": "^7.0.0",
+    "@supabase/supabase-js": "^2.112.4",
+    "dotenv": "^17.4.2"
+  }
+}
