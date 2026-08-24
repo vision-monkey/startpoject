@@ -7,12 +7,16 @@ openSettingsBtn.addEventListener("click", () => {
   settingsModal.showModal();
 });
 
+function syncIntervalGroupVisibility() {
+  const mode = document.querySelector('input[name="mode"]:checked').value;
+  intervalGroup.hidden = mode !== "auto";
+}
+
 document.querySelectorAll('input[name="mode"]').forEach((input) => {
-  input.addEventListener("change", () => {
-    const mode = document.querySelector('input[name="mode"]:checked').value;
-    intervalGroup.hidden = mode !== "auto";
-  });
+  input.addEventListener("change", syncIntervalGroupVisibility);
 });
+
+syncIntervalGroupVisibility();
 
 startBtn.addEventListener("click", () => {
   const mode = document.querySelector('input[name="mode"]:checked').value;
