@@ -177,14 +177,20 @@ document.addEventListener("keydown", (e) => {
 
 window.addEventListener("pagehide", () => Speech.stop());
 
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 async function loadWords() {
   try {
     const { data, error } = await client
       .from("words")
       .select("*")
-      .eq("hsk_level", 1)
-      .order("frequency", { ascending: true, nullsFirst: false })
-      .order("id", { ascending: true });
+      .eq("hsk_level", 1);
 
     if (error) throw error;
 
@@ -193,7 +199,7 @@ async function loadWords() {
       return;
     }
 
-    words = data;
+    words = shuffle(data);
     currentIndex = 0;
     showCard();
   } catch (err) {
