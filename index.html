@@ -93,6 +93,15 @@
     outline: 2px solid var(--text-hanzi);
     outline-offset: 2px;
   }
+  .option-divider {
+    align-self: center;
+    color: var(--border-card);
+    font-size: 1.1rem;
+  }
+  .option-btn[hidden],
+  .option-divider[hidden] {
+    display: none !important;
+  }
   #startBtn {
     margin-top: 0.25rem;
     padding: 0.9rem 1rem;
@@ -121,6 +130,8 @@
       <div class="option-row">
         <label class="option-btn"><input type="radio" name="mode" value="manual"> 수동</label>
         <label class="option-btn"><input type="radio" name="mode" value="auto" checked> 자동</label>
+        <span class="option-divider auto-only">|</span>
+        <label class="option-btn auto-only"><input type="checkbox" id="autoSpeakCheckbox" checked> 발음 읽어주기</label>
       </div>
     </div>
 
@@ -133,10 +144,6 @@
     </div>
 
     <div class="setting-group" id="intervalGroup">
-      <div class="option-row">
-        <label class="option-btn"><input type="checkbox" id="autoSpeakCheckbox" checked> 발음 읽어주기</label>
-      </div>
-
       <div class="setting-title text-label">카드 전환 간격</div>
       <div class="option-row">
         <label class="option-btn"><input type="radio" name="interval" value="2" checked> 2초</label>

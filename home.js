@@ -7,9 +7,13 @@ openSettingsBtn.addEventListener("click", () => {
   settingsModal.showModal();
 });
 
+const autoOnlyEls = document.querySelectorAll(".auto-only");
+
 function syncIntervalGroupVisibility() {
   const mode = document.querySelector('input[name="mode"]:checked').value;
-  intervalGroup.hidden = mode !== "auto";
+  const isAuto = mode === "auto";
+  intervalGroup.hidden = !isAuto;
+  autoOnlyEls.forEach((el) => { el.hidden = !isAuto; });
 }
 
 document.querySelectorAll('input[name="mode"]').forEach((input) => {
