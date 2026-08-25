@@ -56,3 +56,12 @@ body {
   font-weight: 500;
   color: var(--text-label);
 }
+
+.ad-slot {
+  display: block;
+  width: 100%;
+  min-height: 100px;
+  overflow: hidden;
+  background: var(--bg-card);
+  border-radius: 12px;
+}
