@@ -88,6 +88,8 @@ body {
 .mode-nav {
   display: flex;
   width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
   gap: 0.2rem;
   padding: 0.3rem;
   background: var(--text-hanzi);
