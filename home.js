@@ -1,10 +1,17 @@
-const openSettingsBtn = document.getElementById("openSettingsBtn");
 const settingsModal = document.getElementById("settingsModal");
+const modalTitle = document.getElementById("modalTitle");
 const intervalGroup = document.getElementById("intervalGroup");
 const startBtn = document.getElementById("startBtn");
+const levelButtons = document.querySelectorAll(".level-btn");
 
-openSettingsBtn.addEventListener("click", () => {
-  settingsModal.showModal();
+let selectedLevel = 1;
+
+levelButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    selectedLevel = Number(btn.dataset.level);
+    modalTitle.textContent = `HSK ${selectedLevel}급 학습 설정`;
+    settingsModal.showModal();
+  });
 });
 
 const autoOnlyEls = document.querySelectorAll(".auto-only");
@@ -32,7 +39,7 @@ startBtn.addEventListener("click", () => {
 
   localStorage.setItem(
     "hskStudySettings",
-    JSON.stringify({ mode, hidePinyin, hideMeaning, interval, autoSpeak })
+    JSON.stringify({ hskLevel: selectedLevel, mode, hidePinyin, hideMeaning, interval, autoSpeak })
   );
 
   window.location.href = "study/";

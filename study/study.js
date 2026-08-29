@@ -17,7 +17,7 @@ const speakBtn = document.getElementById("speakBtn");
 const speakHintEl = document.getElementById("speakHint");
 
 function loadSettings() {
-  const defaults = { mode: "manual", hidePinyin: false, hideMeaning: true, interval: 4, autoSpeak: false };
+  const defaults = { hskLevel: 1, mode: "manual", hidePinyin: false, hideMeaning: true, interval: 4, autoSpeak: false };
   try {
     const raw = localStorage.getItem("hskStudySettings");
     if (!raw) return defaults;
@@ -28,6 +28,9 @@ function loadSettings() {
 }
 
 const settings = loadSettings();
+
+document.title = `HSK ${settings.hskLevel} 단어 학습`;
+document.getElementById("pageTitle").textContent = `HSK ${settings.hskLevel}급 단어`;
 
 let words = [];
 let currentIndex = 0;
@@ -187,19 +190,32 @@ function shuffle(array) {
 
 async function loadWords() {
   try {
-    const { data, error } = await client
-      .from("words")
-      .select("*")
-      .eq("hsk_level", 1);
+    // Supabase/PostgREST caps a single response at ~1000 rows, so levels
+    // like HSK5/6 (1298/2500 words) need to be paged in.
+    const PAGE_SIZE = 1000;
+    let all = [];
+    let offset = 0;
+    while (true) {
+      const { data, error } = await client
+        .from("words")
+        .select("*")
+        .eq("hsk_level", settings.hskLevel)
+        .range(offset, offset + PAGE_SIZE - 1);
 
-    if (error) throw error;
+      if (error) throw error;
+      if (!data || data.length === 0) break;
 
-    if (!data || data.length === 0) {
+      all = all.concat(data);
+      if (data.length < PAGE_SIZE) break;
+      offset += PAGE_SIZE;
+    }
+
+    if (all.length === 0) {
       showMessage("표시할 단어가 없습니다.", false);
       return;
     }
 
-    words = shuffle(data);
+    words = shuffle(all);
     currentIndex = 0;
     showCard();
   } catch (err) {

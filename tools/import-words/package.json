@@ -1,0 +1,15 @@
+{
+  "name": "hsk-word-import",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Local-only script: imports HSK words (with Claude-written Korean glosses) from the CSV into Supabase. Never deployed.",
+  "type": "commonjs",
+  "scripts": {
+    "import": "node import-words.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.112.4",
+    "csv-parse": "^7.0.2",
+    "dotenv": "^17.4.2"
+  }
+}

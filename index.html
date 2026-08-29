@@ -14,18 +14,27 @@
     width: 100%;
     max-width: 420px;
   }
-  .start-btn {
+  .level-heading {
+    margin: 0;
+    text-align: center;
+  }
+  .level-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 420px;
+  }
+  .level-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    max-width: 420px;
-    padding: 2.5rem 1.5rem;
-    font-size: clamp(1.5rem, 6vw, 2rem);
+    padding: 1.5rem 1rem;
+    font-size: clamp(1.1rem, 5vw, 1.4rem);
     font-weight: 600;
     cursor: pointer;
   }
-  .start-btn:active {
+  .level-btn:active {
     background: var(--border-card);
   }
 
@@ -119,7 +128,15 @@
 </head>
 <body>
   <main class="page-main">
-    <button id="openSettingsBtn" type="button" class="card start-btn text-hanzi">HSK 1급 단어</button>
+    <h1 class="level-heading text-label">학습할 급수를 선택하세요</h1>
+    <div class="level-grid">
+      <button type="button" class="card level-btn text-hanzi" data-level="1">HSK 1급</button>
+      <button type="button" class="card level-btn text-hanzi" data-level="2">HSK 2급</button>
+      <button type="button" class="card level-btn text-hanzi" data-level="3">HSK 3급</button>
+      <button type="button" class="card level-btn text-hanzi" data-level="4">HSK 4급</button>
+      <button type="button" class="card level-btn text-hanzi" data-level="5">HSK 5급</button>
+      <button type="button" class="card level-btn text-hanzi" data-level="6">HSK 6급</button>
+    </div>
 
     <div class="ad-wrap">
       <ins class="adsbygoogle ad-slot"
@@ -141,7 +158,7 @@
   </nav>
 
   <dialog id="settingsModal" class="card">
-    <h2 class="modal-title text-label">학습 설정</h2>
+    <h2 class="modal-title text-label" id="modalTitle">학습 설정</h2>
 
     <div class="setting-group">
       <div class="setting-title text-label">모드</div>

@@ -132,37 +132,57 @@ async function main() {
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
   await ensureBucket(supabase);
 
-  let query = supabase
-    .from("words")
-    .select("id, hanzi")
-    .is("audio_url", null)
-    .order("id", { ascending: true });
-  if (hskLevel) query = query.eq("hsk_level", hskLevel);
-  if (limit) query = query.limit(limit);
+  // Supabase/PostgREST caps a single select at ~1000 rows by default, so we
+  // re-fetch the next batch of still-NULL rows in a loop instead of paging
+  // with .range() (an offset would skip rows as audio_url gets filled in).
+  const PAGE_SIZE = 1000;
+  async function fetchNextBatch() {
+    let query = supabase
+      .from("words")
+      .select("id, hanzi")
+      .is("audio_url", null)
+      .order("id", { ascending: true })
+      .limit(PAGE_SIZE);
+    if (hskLevel) query = query.eq("hsk_level", hskLevel);
+    const { data, error } = await query;
+    if (error) throw error;
+    return data;
+  }
 
-  const { data: words, error } = await query;
-  if (error) throw error;
+  const { count: totalCount, error: countError } = await (() => {
+    let q = supabase.from("words").select("id", { count: "exact", head: true }).is("audio_url", null);
+    if (hskLevel) q = q.eq("hsk_level", hskLevel);
+    return q;
+  })();
+  if (countError) throw countError;
 
-  console.log(`처리 대상 (audio_url이 비어있는 단어): ${words.length}개\n`);
+  const totalToProcess = limit ? Math.min(limit, totalCount) : totalCount;
+  console.log(`처리 대상 (audio_url이 비어있는 단어): ${totalToProcess}개\n`);
 
   let done = 0;
   const failed = [];
 
-  for (const word of words) {
-    try {
-      await withRetry(() => processWord(ttsClient, supabase, voice, word), {
-        label: `${word.hanzi} (id=${word.id})`,
-      });
-      done++;
-      console.log(`${done}/${words.length} 완료 (${word.hanzi})`);
-    } catch (err) {
-      failed.push({ word, message: err.message });
-      console.error(`✗ ${word.hanzi} (id=${word.id}) 최종 실패: ${err.message}`);
+  while (done + failed.length < totalToProcess) {
+    const batch = await fetchNextBatch();
+    if (batch.length === 0) break;
+
+    for (const word of batch) {
+      if (done + failed.length >= totalToProcess) break;
+      try {
+        await withRetry(() => processWord(ttsClient, supabase, voice, word), {
+          label: `${word.hanzi} (id=${word.id})`,
+        });
+        done++;
+        console.log(`${done}/${totalToProcess} 완료 (${word.hanzi})`);
+      } catch (err) {
+        failed.push({ word, message: err.message });
+        console.error(`✗ ${word.hanzi} (id=${word.id}) 최종 실패: ${err.message}`);
+      }
+      await sleep(REQUEST_DELAY_MS);
     }
-    await sleep(REQUEST_DELAY_MS);
   }
 
-  console.log(`\n총 ${words.length}개 중 성공 ${done}개, 실패 ${failed.length}개`);
+  console.log(`\n총 ${totalToProcess}개 중 성공 ${done}개, 실패 ${failed.length}개`);
   if (failed.length) {
     console.log(
       "실패한 단어:",
