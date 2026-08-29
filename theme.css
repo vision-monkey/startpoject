@@ -20,9 +20,93 @@
 
 body {
   margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: var(--bg-page);
   color: var(--text-meaning);
   font-family: var(--font-ui);
+}
+
+.page-main {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+.content-page {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+}
+.content-page .content-inner {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.content-page h1 {
+  font-family: var(--font-ui);
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-hanzi);
+  margin: 0 0 0.5rem;
+}
+.content-page h2 {
+  font-family: var(--font-ui);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-hanzi);
+  margin: 1rem 0 0;
+}
+.content-page p,
+.content-page li {
+  line-height: 1.7;
+  font-size: 0.95rem;
+  color: var(--text-meaning);
+}
+.content-page ul,
+.content-page ol {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.content-page a {
+  color: var(--text-hanzi);
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem 1.1rem;
+  padding: 0.9rem 1rem;
+  border-top: 1px solid var(--border-card);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+}
+.site-nav a {
+  color: var(--text-label);
+  text-decoration: none;
+}
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  color: var(--text-hanzi);
+  text-decoration: underline;
+}
+.site-nav a[aria-current="page"] {
+  color: var(--text-hanzi);
+  font-weight: 600;
 }
 
 .card {
