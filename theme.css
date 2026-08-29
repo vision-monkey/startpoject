@@ -87,25 +87,30 @@ body {
 
 .mode-nav {
   display: flex;
-  justify-content: center;
-  gap: 0.6rem;
-  padding: 0.9rem 1rem 0;
+  width: 100%;
+  gap: 0.2rem;
+  padding: 0.3rem;
+  background: var(--text-hanzi);
 }
 .mode-nav a {
-  padding: 0.5rem 1.25rem;
-  border: 2px solid var(--border-card);
+  flex: 1;
+  padding: 0.55rem 1rem;
   border-radius: 999px;
-  background: var(--bg-card);
-  color: var(--text-label);
+  text-align: center;
+  color: var(--border-card);
   font-family: var(--font-ui);
   font-size: 0.9rem;
   font-weight: 500;
   text-decoration: none;
+  white-space: nowrap;
+}
+.mode-nav a:hover,
+.mode-nav a:focus-visible {
+  color: var(--bg-card);
 }
 .mode-nav a[aria-current="page"] {
-  background: var(--text-hanzi);
-  border-color: var(--text-hanzi);
-  color: var(--bg-card);
+  background: var(--bg-card);
+  color: var(--text-hanzi);
   font-weight: 600;
 }
 
