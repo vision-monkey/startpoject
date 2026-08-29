@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>HSK 1 단어 학습</title>
+<title>일상 회화 문장 연습</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
@@ -46,9 +46,9 @@
     text-align: center;
     gap: 1.25rem;
   }
-  .hanzi {
-    font-size: clamp(3rem, 16vw, 4.25rem);
-    line-height: 1;
+  .sentence-text {
+    font-size: clamp(1.4rem, 6vw, 2rem);
+    line-height: 1.5;
   }
 
   .speak-btn {
@@ -90,10 +90,10 @@
   }
 
   .pinyin {
-    font-size: clamp(1.1rem, 5vw, 1.4rem);
+    font-size: clamp(1rem, 4.5vw, 1.2rem);
   }
   .meaning {
-    font-size: clamp(1.1rem, 5vw, 1.4rem);
+    font-size: clamp(1rem, 4.5vw, 1.2rem);
   }
 
   .maskable {
@@ -162,14 +162,14 @@
 <body>
   <main class="page-main">
   <div class="study-page">
-    <h1 id="pageTitle" class="text-label">HSK 단어</h1>
+    <h1 class="text-label">일상 회화 문장</h1>
     <div id="progress" class="text-label hidden"></div>
 
     <div id="message" class="text-label">불러오는 중...</div>
 
     <div id="scene" class="scene hidden">
       <div id="flashcard" class="card flashcard">
-        <div id="hanzi" class="text-hanzi hanzi"></div>
+        <div id="hanzi" class="text-hanzi sentence-text"></div>
 
         <button id="speakBtn" type="button" class="speak-btn" aria-label="발음 듣기" disabled>
           <svg class="wave-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -184,7 +184,7 @@
           <div id="pinyin" class="text-pinyin pinyin"></div>
           <div class="mask">탭하여 보기</div>
         </div>
-        <div class="maskable" data-field="meaning">
+        <div class="maskable masked" data-field="meaning">
           <div id="meaning" class="text-meaning meaning"></div>
           <div class="mask">탭하여 보기</div>
         </div>
@@ -207,8 +207,8 @@
   </main>
 
   <nav class="mode-nav">
-    <a href="/" aria-current="page">HSK</a>
-    <a href="/sentences/">일상 표현</a>
+    <a href="/">HSK</a>
+    <a href="/sentences/" aria-current="page">일상 표현</a>
   </nav>
   <nav class="site-nav">
     <a href="/">홈</a>
@@ -221,6 +221,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="../config.js"></script>
   <script src="../speech.js"></script>
-  <script src="study.js"></script>
+  <script src="sentences.js"></script>
 </body>
 </html>

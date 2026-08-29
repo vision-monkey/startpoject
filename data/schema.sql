@@ -34,6 +34,24 @@ create policy "words are readable by everyone"
   on public.words for select
   using (true);
 
+-- ---------- sentences (everyday conversational practice, no HSK level) ----------
+create table if not exists public.sentences (
+  id         bigint generated always as identity primary key,
+  hanzi      text not null,
+  pinyin     text not null,
+  meaning_ko text not null,
+  audio_url  text,
+  created_at timestamptz not null default now()
+);
+
+create unique index if not exists sentences_hanzi_pinyin_uidx
+  on public.sentences (hanzi, pinyin);
+
+alter table public.sentences enable row level security;
+create policy "sentences are readable by everyone"
+  on public.sentences for select
+  using (true);
+
 -- ---------- profiles ----------
 create table if not exists public.profiles (
   id               uuid primary key references auth.users (id) on delete cascade,
